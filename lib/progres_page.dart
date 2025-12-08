@@ -5,6 +5,34 @@ import 'package:jurnalku/widgets/appdrawer.dart';
 class ProgressBelajarPage extends StatelessWidget {
   const ProgressBelajarPage({Key? key}) : super(key: key);
 
+  // Dummy data kompetensi setiap project
+  final List<Map<String, dynamic>> dummyKompetensi = const [
+    {
+      "judul": "Membuat Aplikasi CRUD",
+      "guru": "Pak Rudi",
+      "tanggal": "22 Nov 2025",
+      "status": "Lulus",
+      "catatanGuru": "Sangat baik, fitur lengkap.",
+      "catatanSiswa": "Belajar memakai API & State Management."
+    },
+    {
+      "judul": "UI/UX Mobile Apps",
+      "guru": "Bu Sinta",
+      "tanggal": "19 Nov 2025",
+      "status": "Proses",
+      "catatanGuru": "Perlu perbaikan layout.",
+      "catatanSiswa": "Belajar responsive design."
+    },
+    {
+      "judul": "Game Development Dasar",
+      "guru": "Pak Yoga",
+      "tanggal": "10 Nov 2025",
+      "status": "Pending",
+      "catatanGuru": "-",
+      "catatanSiswa": "Masih memahami engine."
+    },
+  ];
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -17,7 +45,7 @@ class ProgressBelajarPage extends StatelessWidget {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              // Title Section
+              // ===== Title =====
               const Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
@@ -51,57 +79,26 @@ class ProgressBelajarPage extends StatelessWidget {
               ),
               const SizedBox(height: 24),
 
-              // Stats Cards
-              _buildStatCard(
-                'Total Pengajuan',
-                '0',
-                'Semua status',
-                Colors.blue,
-                Icons.check_circle_outline,
-              ),
+              // ===== Stats Cards =====
+              _buildStatCard('Total Pengajuan', '3', 'Semua status', Colors.blue, Icons.check_circle_outline),
               const SizedBox(height: 16),
-              _buildStatCard(
-                'Halaman Ini',
-                '0',
-                'Data ditampilkan',
-                Colors.green,
-                Icons.description_outlined,
-              ),
+              _buildStatCard('Halaman Ini', '3', 'Data ditampilkan', Colors.green, Icons.description_outlined),
               const SizedBox(height: 16),
-              _buildStatCard(
-                'Status Pending',
-                '0',
-                'Perlu validasi',
-                Colors.orange,
-                Icons.access_time,
-              ),
+              _buildStatCard('Status Pending', '1', 'Perlu validasi', Colors.orange, Icons.access_time),
               const SizedBox(height: 16),
-              _buildStatCard(
-                'Total Halaman',
-                '1',
-                'Navigasi tersedia',
-                Colors.purple,
-                Icons.insert_emoticon_outlined,
-              ),
+              _buildStatCard('Total Halaman', '1', 'Navigasi tersedia', Colors.purple, Icons.insert_emoticon_outlined),
+
               const SizedBox(height: 32),
 
-              // Project List
-              _buildProjectCard(
-                'Project Work',
-                'Kompetensi dan materi pembelajaran',
-              ),
+              // ===== Project List =====
+              _buildProjectCard('Project Work', 'Kompetensi dan materi pembelajaran'),
               const SizedBox(height: 16),
-              _buildProjectCard(
-                'Mobile Apps',
-                'Kompetensi dan materi pembelajaran',
-              ),
+              _buildProjectCard('Mobile Apps', 'Kompetensi dan materi pembelajaran'),
               const SizedBox(height: 16),
-              _buildProjectCard(
-                'UKK (Uji Kompetensi Keahlian)',
-                'Kompetensi dan materi pembelajaran',
-              ),
+              _buildProjectCard('UKK (Uji Kompetensi Keahlian)', 'Kompetensi dan materi pembelajaran'),
               const SizedBox(height: 16),
               _buildProjectCard('GIM', 'Kompetensi dan materi pembelajaran'),
+
               const SizedBox(height: 24),
             ],
           ),
@@ -110,6 +107,7 @@ class ProgressBelajarPage extends StatelessWidget {
     );
   }
 
+  // ===================== STAT CARD =====================
   Widget _buildStatCard(
     String title,
     String value,
@@ -122,7 +120,7 @@ class ProgressBelajarPage extends StatelessWidget {
       decoration: BoxDecoration(
         color: Colors.white,
         borderRadius: BorderRadius.circular(12),
-        border: Border.all(color: Colors.grey.shade300, width: 1),
+        border: Border.all(color: Colors.grey.shade300),
         boxShadow: [
           BoxShadow(
             color: Colors.black.withOpacity(0.05),
@@ -133,54 +131,39 @@ class ProgressBelajarPage extends StatelessWidget {
       ),
       child: Row(
         children: [
+          // Texts
           Expanded(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text(
-                  title,
-                  style: const TextStyle(fontSize: 13, color: Colors.grey),
-                ),
+                Text(title, style: const TextStyle(fontSize: 13, color: Colors.grey)),
                 const SizedBox(height: 8),
                 Text(
                   value,
-                  style: const TextStyle(
-                    fontSize: 32,
-                    fontWeight: FontWeight.bold,
-                    color: Colors.black87,
-                  ),
+                  style: const TextStyle(fontSize: 32, fontWeight: FontWeight.bold),
                 ),
                 const SizedBox(height: 4),
                 Row(
                   children: [
-                    Container(
-                      width: 8,
-                      height: 8,
-                      decoration: BoxDecoration(
-                        color: color,
-                        shape: BoxShape.circle,
-                      ),
-                    ),
+                    Container(width: 8, height: 8, decoration: BoxDecoration(color: color, shape: BoxShape.circle)),
                     const SizedBox(width: 6),
                     Text(
                       status,
-                      style: TextStyle(
-                        fontSize: 11,
-                        color: color,
-                        fontWeight: FontWeight.w600,
-                      ),
+                      style: TextStyle(fontSize: 11, fontWeight: FontWeight.w600, color: color),
                     ),
                   ],
                 ),
               ],
             ),
           ),
-          Icon(icon, size: 32, color: color.withOpacity(0.7)),
+
+          Icon(icon, size: 32, color: color),
         ],
       ),
     );
   }
 
+  // ===================== PROJECT CARD =====================
   Widget _buildProjectCard(String title, String subtitle) {
     return Container(
       padding: const EdgeInsets.all(16),
@@ -188,99 +171,74 @@ class ProgressBelajarPage extends StatelessWidget {
         color: const Color.fromARGB(255, 244, 244, 244),
         borderRadius: BorderRadius.circular(12),
         boxShadow: [
-          BoxShadow(
-            color: Colors.black.withOpacity(0.05),
-            blurRadius: 10,
-            offset: const Offset(0, 2),
-          ),
+          BoxShadow(color: Colors.black.withOpacity(0.05), blurRadius: 10, offset: const Offset(0, 2)),
         ],
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Text(
-            title,
-            style: const TextStyle(
-              fontSize: 16,
-              fontWeight: FontWeight.bold,
-              color: Colors.black87,
-            ),
-          ),
+          // Header
+          Text(title, style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
           const SizedBox(height: 4),
-          Text(
-            subtitle,
-            style: const TextStyle(fontSize: 12, color: Colors.grey),
-          ),
+          Text(subtitle, style: const TextStyle(fontSize: 12, color: Colors.grey)),
           const SizedBox(height: 16),
-          SingleChildScrollView(
-            scrollDirection: Axis.horizontal,
-            child: DataTable(
-              columnSpacing: 20,
-              columns: const [
-                DataColumn(
-                  label: Text(
-                    'KOMPETENSI',
-                    style: TextStyle(
-                      fontSize: 11,
-                      color: Colors.grey,
-                      fontWeight: FontWeight.w600,
-                    ),
-                  ),
+
+          // ===== ExpansionTile List Komp =====
+          ListView.builder(
+            shrinkWrap: true,
+            physics: const NeverScrollableScrollPhysics(),
+            itemCount: dummyKompetensi.length,
+            itemBuilder: (context, index) {
+              final item = dummyKompetensi[index];
+
+              return ExpansionTile(
+                title: Text(
+                  item["judul"],
+                  style: const TextStyle(fontWeight: FontWeight.w600, fontSize: 14),
                 ),
-                DataColumn(
-                  label: Text(
-                    'GURU',
-                    style: TextStyle(
-                      fontSize: 11,
-                      color: Colors.grey,
-                      fontWeight: FontWeight.w600,
-                    ),
-                  ),
+                subtitle: Text(
+                  "Status: ${item["status"]}",
+                  style: const TextStyle(color: Colors.grey, fontSize: 12),
                 ),
-                DataColumn(
-                  label: Text(
-                    'TANGGAL',
-                    style: TextStyle(
-                      fontSize: 11,
-                      color: Colors.grey,
-                      fontWeight: FontWeight.w600,
+                children: [
+                  // Card Detail
+                  Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 4),
+                    child: Card(
+                      elevation: 2,
+                      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+                      child: Padding(
+                        padding: const EdgeInsets.all(14),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            _detailRow("Guru", item["guru"]),
+                            _detailRow("Tanggal", item["tanggal"]),
+                            _detailRow("Status", item["status"]),
+                            _detailRow("Catatan Guru", item["catatanGuru"]),
+                            _detailRow("Catatan Siswa", item["catatanSiswa"]),
+                          ],
+                        ),
+                      ),
                     ),
-                  ),
-                ),
-                DataColumn(
-                  label: Text(
-                    'STATUS',
-                    style: TextStyle(
-                      fontSize: 11,
-                      color: Colors.grey,
-                      fontWeight: FontWeight.w600,
-                    ),
-                  ),
-                ),
-                DataColumn(
-                  label: Text(
-                    'CATATAN GURU',
-                    style: TextStyle(
-                      fontSize: 11,
-                      color: Colors.grey,
-                      fontWeight: FontWeight.w600,
-                    ),
-                  ),
-                ),
-                DataColumn(
-                  label: Text(
-                    'CATATAN SISWA',
-                    style: TextStyle(
-                      fontSize: 11,
-                      color: Colors.grey,
-                      fontWeight: FontWeight.w600,
-                    ),
-                  ),
-                ),
-              ],
-              rows: const [],
-            ),
+                  )
+                ],
+              );
+            },
           ),
+        ],
+      ),
+    );
+  }
+
+  Widget _detailRow(String label, String value) {
+    return Padding(
+      padding: const EdgeInsets.only(bottom: 8),
+      child: Row(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          SizedBox(width: 110, child: Text(label, style: const TextStyle(fontWeight: FontWeight.w600))),
+          Expanded(child: Text(value)),
         ],
       ),
     );

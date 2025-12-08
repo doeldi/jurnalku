@@ -7,6 +7,37 @@ enum DailyStatus { done, empty, absent }
 class JurnalPage extends StatelessWidget {
   JurnalPage({super.key});
 
+  final List<Map<String, String>> pekerjaanDummy = [
+    {
+      "pekerjaan": "Membersihkan ruang kelas",
+      "tanggal": "12 Nov 2025",
+      "saksi": "Pak Andi",
+    },
+    {
+      "pekerjaan": "Menyiapkan alat praktikum",
+      "tanggal": "15 Nov 2025",
+      "saksi": "Bu Rina",
+    },
+  ];
+
+  final List<Map<String, String>> materiDummy = [
+    {
+      "materi": "OOP Dasar",
+      "status": "A", // A = approved
+      "tanggal": "05 Nov 2025",
+    },
+    {
+      "materi": "Membuat REST API",
+      "status": "P", // Pending
+      "tanggal": "12 Nov 2025",
+    },
+    {
+      "materi": "Debugging aplikasi",
+      "status": "R", // Revisi
+      "tanggal": "18 Nov 2025",
+    },
+  ];
+
   late final Map<int, DailyStatus> dailyStatus = {
     for (int i = 1; i <= 30; i++)
       i: i % 2 == 1
@@ -42,7 +73,6 @@ class JurnalPage extends StatelessWidget {
     );
   }
 
-  // =====================  HEADER  =====================
   Widget buildHeader(BuildContext context) {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -69,23 +99,11 @@ class JurnalPage extends StatelessWidget {
             ),
           ],
         ),
-        Container(
-          decoration: BoxDecoration(
-            color: const Color(0xFF1E3A8A),
-            borderRadius: BorderRadius.circular(8),
-          ),
-          padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
-          child: IconButton(
-            onPressed: () {},
-            icon: const Icon(Icons.arrow_back, color: Colors.white),
-            splashRadius: 20,
-          ),
-        ),
       ],
     );
   }
 
-  // =====================  KALENDER  =====================
+  // ===================== PEMBIASAAN HARIAN =====================
   Widget buildPembiasaanHarian() {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -95,8 +113,6 @@ class JurnalPage extends StatelessWidget {
           style: TextStyle(fontSize: 16, fontWeight: FontWeight.w700),
         ),
         const SizedBox(height: 8),
-
-        // Legend
         const Row(
           children: [
             Icon(Icons.check_circle, color: Colors.green, size: 12),
@@ -111,12 +127,12 @@ class JurnalPage extends StatelessWidget {
           ],
         ),
         const SizedBox(height: 16),
-
         buildCalendar(),
       ],
     );
   }
 
+  // Grid kalender
   Widget buildCalendar() {
     return GridView.builder(
       shrinkWrap: true,
@@ -172,25 +188,35 @@ class JurnalPage extends StatelessWidget {
     );
   }
 
-  // =====================  TABLE PEKERJAAN  =====================
+  // ===================== PEKERJAAN DUMMY =====================
   Widget buildPekerjaan() {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
+    return ExpansionTile(
+      title: const Text(
+        "B. Pekerjaan yang dilakukan",
+        style: TextStyle(fontSize: 16, fontWeight: FontWeight.w700),
+      ),
       children: [
-        const Text(
-          "B. Pekerjaan yang dilakukan",
-          style: TextStyle(fontSize: 16, fontWeight: FontWeight.w700),
-        ),
-        const SizedBox(height: 12),
-        Container(
-          decoration: BoxDecoration(
-            border: Border.all(color: Colors.grey.shade300),
-          ),
+        Card(
+          elevation: 1,
+          shape:
+              RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
           child: Column(
             children: [
-              headerRow(["Pekerjaan", "Tgl", "Saksi"]),
-              dataRow("Belum ada pekerjaan yang diinput.", "", ""),
-              addRow("+ Tambah Pekerjaan"),
+              ...pekerjaanDummy.map((p) {
+                return ListTile(
+                  leading: const Icon(Icons.work_outline),
+                  title: Text(p["pekerjaan"]!),
+                  subtitle:
+                      Text("Tanggal: ${p['tanggal']} | Saksi: ${p['saksi']}"),
+                );
+              }).toList(),
+              const Divider(height: 0),
+              ListTile(
+                onTap: () {},
+                leading: const Icon(Icons.add, color: Colors.blue),
+                title: const Text("Tambah Pekerjaan",
+                    style: TextStyle(color: Colors.blue)),
+              ),
             ],
           ),
         ),
@@ -198,29 +224,46 @@ class JurnalPage extends StatelessWidget {
     );
   }
 
-  // =====================  TABLE MATERI  =====================
+  // ===================== MATERI DUMMY =====================
   Widget buildMateri() {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
+    return ExpansionTile(
+      title: const Text(
+        "C. Materi yang dipelajari",
+        style: TextStyle(fontSize: 16, fontWeight: FontWeight.w700),
+      ),
       children: [
-        const Text(
-          "C. Materi yang dipelajari",
-          style: TextStyle(fontSize: 16, fontWeight: FontWeight.w700),
-        ),
-        const SizedBox(height: 12),
-        Container(
-          decoration: BoxDecoration(
-            border: Border.all(color: Colors.grey.shade300),
-          ),
+        Card(
+          elevation: 1,
+          shape:
+              RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
           child: Column(
             children: [
-              headerRow(["Materi", "Sts", "Tgl"]),
-              dataRow("Belum ada materi yang diinput.", "", ""),
-              addRow("+ Tambah Materi"),
+              ...materiDummy.map((m) {
+                Color statusColor = Colors.grey;
+                if (m["status"] == "A") statusColor = Colors.green;
+                if (m["status"] == "P") statusColor = Colors.yellow;
+                if (m["status"] == "R") statusColor = Colors.red;
+
+                return ListTile(
+                  leading: Icon(Icons.menu_book_outlined, color: statusColor),
+                  title: Text(m["materi"]!),
+                  subtitle:
+                      Text("Status: ${m['status']} | Tanggal: ${m['tanggal']}"),
+                );
+              }),
+              const Divider(height: 0),
+              ListTile(
+                onTap: () {},
+                leading: const Icon(Icons.add, color: Colors.blue),
+                title: const Text("Tambah Materi",
+                    style: TextStyle(color: Colors.blue)),
+              ),
             ],
           ),
         ),
-        const SizedBox(height: 4),
+
+        const SizedBox(height: 12),
+        // Legend status
         const Row(
           children: [
             Icon(Icons.circle, color: Colors.green, size: 12),
@@ -238,28 +281,25 @@ class JurnalPage extends StatelessWidget {
     );
   }
 
-  // =====================  TABLE POIN  =====================
+  // ===================== POIN =====================
   Widget buildPoin() {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
+    return ExpansionTile(
+      title: const Text(
+        "D. Poin",
+        style: TextStyle(fontSize: 16, fontWeight: FontWeight.w700),
+      ),
       children: [
-        const Text(
-          "D. Poin",
-          style: TextStyle(fontSize: 16, fontWeight: FontWeight.w700),
-        ),
-        const SizedBox(height: 12),
-        Container(
-          decoration: BoxDecoration(
-            border: Border.all(color: Colors.grey.shade300),
-          ),
+        Card(
+          elevation: 1,
+          shape:
+              RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
           child: Column(
             children: [
-              headerRow(["Kategori Poin", "M1", "M2", "M3", "M4"]),
-              dataRow("(5) Project/update progress", "0", "0", "0", "0"),
-              dataRow("(1-5) Poin pertanyaan materi", "0", "0", "0", "0"),
-              dataRow("Jumlah poin minggu ini", "0", "0", "0", "0"),
-              dataRow("Jumlah poin pembiasaan", "0", "0", "0", "0"),
-              dataRow("Total keseluruhan poin", "0", "0", "0", "0"),
+              poinTile("Project / Update Progress", "0"),
+              poinTile("Poin pertanyaan materi", "0"),
+              poinTile("Jumlah poin minggu ini", "0"),
+              poinTile("Jumlah poin pembiasaan", "0"),
+              poinTile("Total keseluruhan poin", "0"),
             ],
           ),
         ),
@@ -267,94 +307,18 @@ class JurnalPage extends StatelessWidget {
     );
   }
 
-  // =====================  TABLE ROW HELPERS  =====================
-  static Widget headerRow(List<String> cols) {
-    return Container(
-      padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 12),
-      decoration: BoxDecoration(
-        color: Colors.grey.shade100,
-        border: Border(
-          bottom: BorderSide(color: Colors.grey.shade300),
-        ),
-      ),
-      child: Row(
-        children: cols
-            .map(
-              (e) => Expanded(
-                child: Text(
-                  e,
-                  textAlign: TextAlign.center,
-                  style: const TextStyle(
-                      fontWeight: FontWeight.w700,
-                      fontSize: 13,
-                      color: Colors.black87),
-                ),
-              ),
-            )
-            .toList(),
-      ),
-    );
-  }
-
-  static Widget dataRow(String c1, String c2, String c3,
-      [String? c4, String? c5]) {
-    return Container(
-      padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 12),
-      decoration: BoxDecoration(
-        border: Border(
-          bottom: BorderSide(color: Colors.grey.shade200),
-        ),
-      ),
-      child: Row(
-        children: [
-          Expanded(
-              child: Text(
-            c1,
-            style: const TextStyle(fontSize: 13),
-          )),
-          Expanded(
-              child: Text(
-            c2,
-            textAlign: TextAlign.center,
-            style: const TextStyle(fontSize: 13),
-          )),
-          Expanded(
-              child: Text(
-            c3,
-            textAlign: TextAlign.center,
-            style: const TextStyle(fontSize: 13),
-          )),
-          if (c4 != null)
-            Expanded(
-                child: Text(
-              c4,
-              textAlign: TextAlign.center,
-              style: const TextStyle(fontSize: 13),
-            )),
-          if (c5 != null)
-            Expanded(
-                child: Text(
-              c5,
-              textAlign: TextAlign.center,
-              style: const TextStyle(fontSize: 13),
-            )),
-        ],
-      ),
-    );
-  }
-
-  static Widget addRow(String label) {
-    return Container(
-      width: double.infinity,
-      padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 12),
-      child: GestureDetector(
-        onTap: () {},
+  Widget poinTile(String label, String value) {
+    return ListTile(
+      title: Text(label),
+      trailing: CircleAvatar(
+        radius: 14,
+        backgroundColor: Colors.blue.shade50,
         child: Text(
-          label,
+          value,
           style: const TextStyle(
-              color: Color(0xFF2563EB),
-              fontWeight: FontWeight.w600,
-              fontSize: 13),
+            color: Colors.blue,
+            fontWeight: FontWeight.bold,
+          ),
         ),
       ),
     );

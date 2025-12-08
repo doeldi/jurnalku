@@ -5,6 +5,24 @@ import 'package:jurnalku/widgets/appdrawer.dart';
 class PermintaanSaksiPage extends StatelessWidget {
   const PermintaanSaksiPage({super.key});
 
+  final List<Map<String, String>> dummyData = const [
+    {
+      "pengirim": "Abdul Hadi",
+      "tanggal": "25 Nov 2025",
+      "keterangan": "Meminta menjadi saksi untuk jurnal keterlambatan.",
+    },
+    {
+      "pengirim": "M. Fazri Adityansah",
+      "tanggal": "24 Nov 2025",
+      "keterangan": "Meminta saksi untuk jurnal kedisiplinan.",
+    },
+    {
+      "pengirim": "Zahran Fairuz R",
+      "tanggal": "23 Nov 2025",
+      "keterangan": "Meminta saksi kegiatan organisasi.",
+    },
+  ];
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -12,27 +30,27 @@ class PermintaanSaksiPage extends StatelessWidget {
       appBar: const CustomAppBar(name: "Abdul Hadi", kelas: "PPLG XII-4"),
       drawer: const AppDrawer(name: "Abdul Hadi", kelas: "PPLG XII-4"),
       body: Padding(
-        padding: EdgeInsets.all(16.0),
+        padding: const EdgeInsets.all(16.0),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Text(
+            const Text(
               'Permintaan Saksi',
               style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
             ),
-            SizedBox(height: 4),
-            Text(
+            const SizedBox(height: 4),
+            const Text(
               'Kelola permintaan menjadi saksi dari siswa lain',
               style: TextStyle(fontSize: 16, color: Colors.grey),
             ),
-            SizedBox(height: 10),
+            const SizedBox(height: 10),
             Container(
-              padding: EdgeInsets.all(16),
+              padding: const EdgeInsets.all(16),
               decoration: BoxDecoration(
                 color: Colors.blue.shade50,
                 borderRadius: BorderRadius.circular(10),
               ),
-              child: Text(
+              child: const Text(
                 "Wednesday, 26 November 2025",
                 style: TextStyle(
                   color: Color.fromARGB(255, 13, 117, 202),
@@ -40,70 +58,83 @@ class PermintaanSaksiPage extends StatelessWidget {
                 ),
               ),
             ),
-            SizedBox(height: 20),
-            Container(
-              decoration: BoxDecoration(
-                color: Colors.grey.shade200,
-                borderRadius: BorderRadius.circular(10),
-                border: Border.all(color: Colors.grey.shade300),
-                boxShadow: [
-                  BoxShadow(
-                    color: Colors.black.withOpacity(0.05),
-                    blurRadius: 8,
-                    offset: const Offset(0, 3),
-                  ),
-                ],
-              ),
-              child: Column(
-                children: [
-                  Container(
-                    padding: const EdgeInsets.symmetric(vertical: 14),
-                    decoration: BoxDecoration(
-                      border: Border(
-                        bottom: BorderSide(color: Colors.grey.shade200),
+            const SizedBox(height: 20),
+
+            // ============= ExpansionTile List ===============
+            Expanded(
+              child: dummyData.isEmpty
+                  ? const Center(
+                      child: Text(
+                        "Belum ada permintaan saksi",
+                        style: TextStyle(fontSize: 16, color: Colors.grey),
                       ),
-                    ),
-                    child: const Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceAround,
-                      children: [
-                        Text(
-                          "PENGIRIM",
-                          style: TextStyle(fontWeight: FontWeight.w600),
-                        ),
-                        Text(
-                          "TANGGAL",
-                          style: TextStyle(fontWeight: FontWeight.w600),
-                        ),
-                        Text(
-                          "KONFIRMASI",
-                          style: TextStyle(fontWeight: FontWeight.w600),
-                        ),
-                      ],
-                    ),
-                  ),
-                  Container(
-                    padding: const EdgeInsets.symmetric(vertical: 14),
-                    decoration: const BoxDecoration(color: Colors.white),
-                    child: Center(
-                      child: Column(
-                        children: const [
-                          Icon(Icons.group, size: 40, color: Colors.grey),
-                          SizedBox(height: 8),
-                          Text(
-                            'Belum Ada Permintaan',
-                            style: TextStyle(color: Colors.black, fontSize: 16),
+                    )
+                  : ListView.builder(
+                      itemCount: dummyData.length,
+                      itemBuilder: (context, index) {
+                        final item = dummyData[index];
+                        return ExpansionTile(
+                          title: Text(
+                            item["pengirim"] ?? "-",
+                            style: const TextStyle(
+                                fontSize: 16, fontWeight: FontWeight.w600),
                           ),
-                          SizedBox(height: 8),
-                          Text(
-                            'Belum ada yang mengirimi perintaan saksi kepada Anda',
-                            style: TextStyle(color: Colors.grey, fontSize: 10),
-                          )
-                        ],
-                      ),
+                          subtitle: Text(
+                            item["tanggal"] ?? "-",
+                            style: const TextStyle(color: Colors.grey),
+                          ),
+                          children: [
+                            Padding(
+                              padding: const EdgeInsets.symmetric(
+                                  horizontal: 16, vertical: 8),
+                              child: Card(
+                                elevation: 2,
+                                shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(10),
+                                ),
+                                child: Padding(
+                                  padding: const EdgeInsets.all(16.0),
+                                  child: Column(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    children: [
+                                      Text(
+                                        item["keterangan"] ?? "",
+                                        style: const TextStyle(fontSize: 14),
+                                      ),
+                                      const SizedBox(height: 12),
+
+                                      // Buttons
+                                      Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.end,
+                                        children: [
+                                          TextButton(
+                                            onPressed: () {},
+                                            child: const Text(
+                                              "Tolak",
+                                              style: TextStyle(
+                                                  color: Colors.red),
+                                            ),
+                                          ),
+                                          ElevatedButton(
+                                            onPressed: () {},
+                                            style: ElevatedButton.styleFrom(
+                                              backgroundColor: Colors.blue,
+                                            ),
+                                            child: const Text("Terima", style: TextStyle(color: Colors.white)),
+                                          ),
+                                        ],
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                              ),
+                            )
+                          ],
+                        );
+                      },
                     ),
-                  ),
-                ],
-              ),
             ),
           ],
         ),
