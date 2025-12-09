@@ -8,6 +8,7 @@ import 'package:jurnalku/progres_page.dart';
 import 'package:jurnalku/panduan_page.dart';
 import 'package:jurnalku/setting_screen.dart';
 import '../dashboard_page.dart';
+import 'package:jurnalku/catatan_sikap.dart';
 
 class AppDrawer extends StatelessWidget {
   final String name;
@@ -52,6 +53,11 @@ class AppDrawer extends StatelessWidget {
           _drawerItem(Icons.insights_outlined, "Progress", () {
             Navigator.push(context,
                 MaterialPageRoute(builder: (_) => const ProgressBelajarPage()));
+          }),
+          //Catatan Sikap
+          _drawerItem(Icons.note_alt_outlined, "Catatan Sikap", () {
+            Navigator.push(context,
+                MaterialPageRoute(builder: (_) => const CatatanSikap()));
           }),
           const Divider(),
           _drawerItem(Icons.help_outline, "Panduan Penggunaan", () {
