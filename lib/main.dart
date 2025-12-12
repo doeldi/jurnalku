@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:jurnalku/jurnal_page.dart';
 import 'package:jurnalku/login.dart';
+import 'package:jurnalku/explore_login.dart';
 
 void main() {
   runApp(const MyApp());
@@ -16,7 +17,7 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      home: const Login(),
+      home: const ExploreLogin(),
     );
   }
 }
